@@ -8,14 +8,27 @@ namespace EFExamples2.Schema
 {
     public abstract class Activity
     {
-        public int Id { get; set; }
+        public Activity() {
+        }
+
+        public Activity(Werehouse werehouse, Parcel parcel = null) {
+            Timestamp = DateTime.Now;
+            Werehouse = werehouse;
+            Parcel = parcel;
+        }
+
+        public int Id { get; protected set; }
 
         public DateTime Timestamp { get; set; }
 
-        public virtual Parcel Parcel { get; set; }
+        public virtual Parcel Parcel { get; protected set; }
 
-        public virtual Werehouse Werehouse { get; set; }
+        public virtual Werehouse Werehouse { get; protected set; }
 
-        public bool IsReverted { get; set; }
+        public bool IsReverted { get; protected set; }
+
+        public abstract Parcel Apply();
+
+        public abstract void Undo();
     }
 }

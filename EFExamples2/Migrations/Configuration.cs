@@ -49,61 +49,41 @@
             context.Werehouses.Add(customs);
             context.Werehouses.Add(kyiv);
 
-            var tufli = new Parcel()
+            /*var tufli = new Parcel(120, 1.4m)
             {
-                Weight = 1.4m,
                 DeliveryFee = 6m,
-                Id = 1,
-                Value = 120,
-            };
+            };*/
 
-            var createTufli = new CreateActivity()
+            var createTufli = new CreateActivity(stockholm, 120, 1.4m, 6m, kyiv)
             {
-                Id = 1,
-                ExpectedDeliveryFee = 6,
-                Parcel = tufli,
-                Price = 120,
                 Timestamp = new DateTime(2019, 9, 10),
-                Werehouse = stockholm,
-                Weight = 1.4m,
-                TargetWerehouse = kyiv
             };
 
-            var readyForDeliveryToMeest = new ReadyForSendActivity()
+            var tufli = createTufli.Apply();
+
+            var readyForDeliveryToMeest = new ReadyForSendActivity(stockholm, tufli)
             {
-                Parcel = tufli,
-                Werehouse = stockholm,
                 Timestamp = new DateTime(2019, 9, 10, 0, 0, 1),
             };
 
-            var sentToMeest = new SendActivity()
+            var sentToMeest = new SendActivity(stockholm, tufli, wroclav)
             {
-                Parcel = tufli,
-                Werehouse = stockholm,
                 Timestamp = new DateTime(2019, 9, 10, 0, 0, 2),
-                SentToWerehouse = wroclav,
             };
 
-            var retreivedByMeest = new RetrieveActivity()
+            var retreivedByMeest = new RetrieveActivity(wroclav, tufli)
             {
-                Parcel = tufli,
-                Werehouse = wroclav,
                 Timestamp = new DateTime(2019, 9, 12),
             };
 
-            var readyForDeliveryToCustoms = new ReadyForSendActivity()
+            var readyForDeliveryToCustoms = new ReadyForSendActivity(wroclav, tufli)
             {
-                Parcel = tufli,
-                Werehouse = wroclav,
                 Timestamp = new DateTime(2019, 9, 13),
             };
 
-            var sentToCustoms = new SendActivity()
+            var sentToCustoms = new SendActivity(wroclav, tufli, customs)
             {
-                Parcel = tufli,
-                Werehouse = wroclav,
                 Timestamp = new DateTime(2019, 9, 13),
-                SentToWerehouse = customs,
             };
 
 

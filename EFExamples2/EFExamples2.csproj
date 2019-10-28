@@ -53,11 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivityHandlers\ActivityHandlersFactory.cs" />
-    <Compile Include="ActivityHandlers\IActivityHandler.cs" />
-    <Compile Include="ActivityHandlers\ReadyForSendActivityHandler.cs" />
-    <Compile Include="ActivityHandlers\RetrieveActivityHandler.cs" />
-    <Compile Include="ActivityHandlers\SendActivityHandler.cs" />
     <Compile Include="CustomConvention\Precision.cs" />
     <Compile Include="CustomConvention\IncludePrivatesConvention.cs" />
     <Compile Include="CustomConvention\PrecisionConvention.cs" />
@@ -70,6 +65,14 @@
     <Compile Include="Migrations\201910200851210_2.cs" />
     <Compile Include="Migrations\201910200851210_2.designer.cs">
       <DependentUpon>201910200851210_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910272143236_3.cs" />
+    <Compile Include="Migrations\201910272143236_3.designer.cs">
+      <DependentUpon>201910272143236_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910272206565_4.cs" />
+    <Compile Include="Migrations\201910272206565_4.designer.cs">
+      <DependentUpon>201910272206565_4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -92,6 +95,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910200851210_2.resx">
       <DependentUpon>201910200851210_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910272143236_3.resx">
+      <DependentUpon>201910272143236_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910272206565_4.resx">
+      <DependentUpon>201910272206565_4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

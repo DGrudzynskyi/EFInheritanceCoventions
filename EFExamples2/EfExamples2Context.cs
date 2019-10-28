@@ -13,14 +13,7 @@ namespace EFExamples2
 
         public DbSet<Parcel> Parcels { get; set; }
 
-        // this DbSet is required for TPH and TPT inheritance strategies
         public DbSet<Activity> Activities { get; set; }
-
-        // four DBSets below are required for TPCT inheritance strategy
-        //public DbSet<CreateActivity> CreateActivities { get; set; }
-        //public DbSet<SendActivity> SendActivities { get; set; }
-        //public DbSet<ReadyForSendActivity> ReadyForSendActivities { get; set; }
-        //public DbSet<RetrieveActivity> RetriesveActivities { get; set; }
 
         public EFExamples2Context() : base("EFExamples2Context")
         {
@@ -39,16 +32,7 @@ namespace EFExamples2
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Add(new PrecisionAttributeConvention());
-            //modelBuilder.Conventions.Add(new IncludePrivatesConvention());
-
-
-            //modelBuilder.Configurations.Add(new Parcel.ParcelConfiguration());
-
-            // for rows below are required in order to change TPH inheritance strategy to TPT
-            /*modelBuilder.Entity<CreateActivity>().ToTable("CreateActivitys");
-            modelBuilder.Entity<ReadyForSendActivity>().ToTable("ReadyForSendActivitys");
-            modelBuilder.Entity<RetrieveActivity>().ToTable("RetrieveActivitys");
-            modelBuilder.Entity<SendActivity>().ToTable("SendActivitys");*/
+            modelBuilder.Conventions.Add(new IncludePrivatesConvention());
         }
     }
 }

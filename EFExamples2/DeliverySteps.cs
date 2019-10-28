@@ -1,5 +1,4 @@
-﻿using EFExamples2.ActivityHandlers;
-using EFExamples2.Schema;
+﻿using EFExamples2.Schema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +13,12 @@ namespace EFExamples2
             using (var ctx = new EFExamples2Context()) {
                 var parcel = ctx.Parcels.Find(1);
                 var customs = ctx.Werehouses.Single(x => x.Name == "Customs");
-                var lastActivity = parcel.Activities.OrderByDescending(x => x.Timestamp).First();
+                var lastActivity = parcel.PickActivity();
 
-                var retrieveActivity = new RetrieveActivity()
-                {
-                    Werehouse = customs,
-                    Timestamp = lastActivity.Timestamp.AddDays(1),
-                };
+                var retrieveActivity = new RetrieveActivity(customs, parcel);
+                retrieveActivity.Timestamp = lastActivity.Timestamp.AddDays(1);
 
-                var handlerFactory = new ActivityHandlersFactory();
-                handlerFactory.GetActivityHandler(retrieveActivity).Apply(parcel, retrieveActivity);
+                parcel.TrackActivity(retrieveActivity);
 
                 ctx.SaveChanges();
             }
@@ -35,23 +30,16 @@ namespace EFExamples2
             {
                 var parcel = ctx.Parcels.Find(1);
                 var customs = ctx.Werehouses.Single(x => x.Name == "Customs");
-                var lastActivity = parcel.Activities.OrderByDescending(x => x.Timestamp).First();
+                var lastActivity = parcel.PickActivity();
 
-                var readyActivity = new ReadyForSendActivity()
-                {
-                    Werehouse = customs,
-                    Timestamp = lastActivity.Timestamp.AddDays(1),
-                };
+                var readyActivity = new ReadyForSendActivity(customs, parcel);
+                readyActivity.Timestamp = lastActivity.Timestamp.AddDays(1);
 
-                var sendActivity = new SendActivity()
-                {
-                    Werehouse = customs,
-                    Timestamp = lastActivity.Timestamp.AddDays(1).AddHours(1),
-                };
+                var sendActivity = new ReadyForSendActivity(customs, parcel);
+                sendActivity.Timestamp = lastActivity.Timestamp.AddDays(1).AddHours(1);
 
-                var handlerFactory = new ActivityHandlersFactory();
-                handlerFactory.GetActivityHandler(readyActivity).Apply(parcel, readyActivity);
-                handlerFactory.GetActivityHandler(sendActivity).Apply(parcel, sendActivity);
+                parcel.TrackActivity(readyActivity);
+                parcel.TrackActivity(sendActivity);
 
                 ctx.SaveChanges();
             }
@@ -62,12 +50,8 @@ namespace EFExamples2
             using (var ctx = new EFExamples2Context())
             {
                 var parcel = ctx.Parcels.Find(1);
-                var lastActivity = parcel.Activities.OrderByDescending(x => x.Timestamp).First();
-
-                var handlerFactory = new ActivityHandlersFactory();
-                var handler = handlerFactory.GetActivityHandler(lastActivity);
-                handler.Revert(lastActivity);
-
+                var lastActivity = parcel.PickActivity();
+                lastActivity.Undo();
                 ctx.SaveChanges();
             }
         }

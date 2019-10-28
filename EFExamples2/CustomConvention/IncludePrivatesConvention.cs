@@ -23,7 +23,10 @@ namespace EFExamples2.CustomConvention
                 // явно из декларируем
                 foreach (var p in nonPublicProperties)
                 {
-                    type.Property(p).HasColumnName(p.Name);
+                    if (!p.PropertyType.IsGenericType)
+                    {
+                        type.Property(p).HasColumnName(p.Name);
+                    }
                 }
             });
         }
