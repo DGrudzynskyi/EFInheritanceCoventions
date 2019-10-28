@@ -14,6 +14,8 @@ namespace EFExamples2.Schema
 
         public string City { get; set; }
 
+        public string PhoneNumber { get; set; }
+
         public virtual List<Parcel> Parcels { get; set; }
     }
 }
