@@ -13,7 +13,7 @@ namespace EFExamples2.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201910280719208_3"; }
+            get { return "201910280731163_3"; }
         }
         
         string IMigrationMetadata.Source
