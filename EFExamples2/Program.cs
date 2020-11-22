@@ -10,7 +10,8 @@ namespace EFExamples2
     {
         static void Main(string[] args)
         {
-            DeliverySteps.RetreivedByCustoms();
+            var deliveryService = new DeliveryService();
+            deliveryService.RetreivedByCustoms();
 
             Console.ReadKey();
         }

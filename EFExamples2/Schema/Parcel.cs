@@ -20,13 +20,10 @@ namespace EFExamples2.Schema
 
         public int Id { get; protected set; }
 
-        [Precision(10, 2)]
         public decimal Value { get; protected set; }
 
-        [Precision(10, 3)]
         public decimal Weight { get; protected set; }
 
-        [Precision(10, 2)]
         public decimal DeliveryFee { get; set; }
 
         public virtual Werehouse Werehouse { get; set; }
@@ -46,6 +43,11 @@ namespace EFExamples2.Schema
         }
 
         public void TrackActivity(Activity activity) {
+            var lastActivity = PickActivity();
+            if (lastActivity.Timestamp > activity.Timestamp) {
+                throw new InvalidOperationException("activities from past can not be applied");
+            }
+
             this.Activities.Add(activity);
             activity.Apply();
         }

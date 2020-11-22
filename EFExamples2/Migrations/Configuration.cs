@@ -49,42 +49,19 @@
             context.Werehouses.Add(customs);
             context.Werehouses.Add(kyiv);
 
-            /*var tufli = new Parcel(120, 1.4m)
-            {
-                DeliveryFee = 6m,
-            };*/
-
-            var createTufli = new CreateActivity(stockholm, 120, 1.4m, 6m, kyiv)
-            {
-                Timestamp = new DateTime(2019, 9, 10),
-            };
+            var createTufli = new CreateActivity(stockholm, 120, 1.4m, 6m, kyiv, new DateTime(2019, 9, 10));
 
             var tufli = createTufli.Apply();
 
-            var readyForDeliveryToMeest = new ReadyForSendActivity(stockholm, tufli)
-            {
-                Timestamp = new DateTime(2019, 9, 10, 0, 0, 1),
-            };
+            var readyForDeliveryToMeest = new ReadyForSendActivity(tufli, new DateTime(2019, 9, 10, 0, 0, 1));
 
-            var sentToMeest = new SendActivity(stockholm, tufli, wroclav)
-            {
-                Timestamp = new DateTime(2019, 9, 10, 0, 0, 2),
-            };
+            var sentToMeest = new SendActivity(tufli, wroclav, null, new DateTime(2019, 9, 10, 0, 0, 2));
 
-            var retreivedByMeest = new RetrieveActivity(wroclav, tufli)
-            {
-                Timestamp = new DateTime(2019, 9, 12),
-            };
+            var retreivedByMeest = new RetrieveActivity(wroclav, tufli, new DateTime(2019, 9, 12));
 
-            var readyForDeliveryToCustoms = new ReadyForSendActivity(wroclav, tufli)
-            {
-                Timestamp = new DateTime(2019, 9, 13),
-            };
+            var readyForDeliveryToCustoms = new ReadyForSendActivity(tufli, new DateTime(2019, 9, 13));
 
-            var sentToCustoms = new SendActivity(wroclav, tufli, customs)
-            {
-                Timestamp = new DateTime(2019, 9, 13),
-            };
+            var sentToCustoms = new SendActivity(tufli, customs, null, new DateTime(2019, 9, 13, 1, 0, 0));
 
 
             context.Parcels.Add(tufli);

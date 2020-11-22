@@ -13,22 +13,26 @@ namespace EFExamples2.Schema
         }
 
         public SendActivity(
-            Werehouse werehouse,
             Parcel parcel,
             Werehouse targetWerehouse,
-            decimal? deliveryFee = null) : base(werehouse, parcel)
+            decimal? deliveryFee = null,
+            DateTime? sendDate = null) : base(parcel.Werehouse, parcel, sendDate)
         {
             AdditionaldDeliveryFee = deliveryFee;
             SentToWerehouse = targetWerehouse;
         }
 
-        public decimal? AdditionaldDeliveryFee { get; set; }
+        public decimal? AdditionaldDeliveryFee { get; protected set; }
 
-        public Werehouse SentToWerehouse { get; set; }
+        public Werehouse SentToWerehouse { get; protected set; }
 
         public override Parcel Apply()
         {
-            Timestamp = DateTime.Now;
+            var canBeSent = Parcel.PickActivity().GetType() == typeof(ReadyForSendActivity);
+            if (!canBeSent) {
+                throw new InvalidOperationException("parcel is not ready to for delivery");
+            }
+
             Parcel.Werehouse = null;
 
             if (AdditionaldDeliveryFee.HasValue)
@@ -41,14 +45,13 @@ namespace EFExamples2.Schema
 
         public override void Undo()
         {
+            base.Undo();
             Parcel.Werehouse = Werehouse;
 
             if (AdditionaldDeliveryFee.HasValue)
             {
                 Parcel.DeliveryFee -= AdditionaldDeliveryFee.Value;
             }
-
-            IsReverted = true;
         }
     }
 }

@@ -16,7 +16,8 @@ namespace EFExamples2.Schema
             decimal price, 
             decimal weight, 
             decimal deliveryFee, 
-            Werehouse targetWerehouse) : base(werehouse) {
+            Werehouse targetWerehouse,
+            DateTime? createDate) : base(werehouse, null, createDate) {
             Price = price;
             Weight = weight;
             ExpectedDeliveryFee = deliveryFee;
@@ -36,14 +37,14 @@ namespace EFExamples2.Schema
             var parcel = new Parcel(Price, Weight, TargetWerehouse);
             parcel.DeliveryFee = ExpectedDeliveryFee;
             parcel.Werehouse = Werehouse;
-            Timestamp = DateTime.Now;
 
             return parcel;
         }
 
         public override void Undo()
         {
-            IsReverted = true;
+            base.Undo();
+
             Parcel.Cancell();
         }
     }
