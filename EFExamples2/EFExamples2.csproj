@@ -61,6 +61,7 @@
     <Compile Include="CustomConvention\Precision.cs" />
     <Compile Include="CustomConvention\IncludePrivatesConvention.cs" />
     <Compile Include="CustomConvention\PrecisionConvention.cs" />
+    <Compile Include="DeliveryStepsBold.cs" />
     <Compile Include="DeliverySteps.cs" />
     <Compile Include="EFExamples2Context.cs" />
     <Compile Include="Migrations\201910200815277_1.cs" />
@@ -74,6 +75,10 @@
     <Compile Include="Migrations\201910280731163_3.cs" />
     <Compile Include="Migrations\201910280731163_3.designer.cs">
       <DependentUpon>201910280731163_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011222320377_4.cs" />
+    <Compile Include="Migrations\202011222320377_4.designer.cs">
+      <DependentUpon>202011222320377_4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -99,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910280731163_3.resx">
       <DependentUpon>201910280731163_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011222320377_4.resx">
+      <DependentUpon>202011222320377_4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

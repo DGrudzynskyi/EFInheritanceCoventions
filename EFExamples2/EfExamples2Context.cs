@@ -39,6 +39,9 @@ namespace EFExamples2
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Add(new PrecisionAttributeConvention());
+
+
+            modelBuilder.Entity<Parcel>().HasOptional(x => x.Werehouse).WithMany(x => x.Parcels);
             //modelBuilder.Conventions.Add(new IncludePrivatesConvention());
 
 

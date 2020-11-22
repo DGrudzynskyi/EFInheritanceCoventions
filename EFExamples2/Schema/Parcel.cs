@@ -23,6 +23,8 @@ namespace EFExamples2.Schema
 
         public virtual Werehouse Werehouse { get; set; }
 
+        public virtual Werehouse TargetWerehouse { get; set; }
+
         // полиморфная ассоциация (TPH, TPT)
         public virtual List<Activity> Activities { get; set; }
 

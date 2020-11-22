@@ -10,7 +10,14 @@ namespace EFExamples2
     {
         static void Main(string[] args)
         {
+            // DeliveryStepsBold.RetreivedByCustoms();
+            // DeliveryStepsBold.ProcessedAndSentByCustoms();
+
             DeliverySteps.RetreivedByCustoms();
+            DeliverySteps.ProcessedAndSentByCustoms();
+
+
+            DeliverySteps.RevertLastActivity();
 
             Console.ReadKey();
         }

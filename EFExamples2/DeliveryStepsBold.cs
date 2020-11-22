@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EFExamples2
 {
-    public static class DeliverySteps
+    public static class DeliveryStepsBold
     {
         public static void RetreivedByCustoms() {
             using (var ctx = new EFExamples2Context()) {
@@ -16,14 +16,24 @@ namespace EFExamples2
                 var customs = ctx.Werehouses.Single(x => x.Name == "Customs");
                 var lastActivity = parcel.Activities.OrderByDescending(x => x.Timestamp).First();
 
+                var sentActivity = lastActivity as SendActivity;
+                if (sentActivity == null)
+                {
+                    throw new NotImplementedException("Unable to retreive the parcell which was never sent");
+                }
+                if (sentActivity.SentToWerehouse != customs)
+                {
+                    throw new NotImplementedException("parcel has been delivered to wrong werehouse!");
+                }
+
                 var retrieveActivity = new RetrieveActivity()
                 {
                     Werehouse = customs,
                     Timestamp = lastActivity.Timestamp.AddDays(1),
                 };
 
-                var handlerFactory = new ActivityHandlersFactory();
-                handlerFactory.GetActivityHandler(retrieveActivity).Apply(parcel, retrieveActivity);
+                parcel.Werehouse = customs;
+                parcel.Activities.Add(retrieveActivity);
 
                 ctx.SaveChanges();
             }
@@ -49,12 +59,15 @@ namespace EFExamples2
                     Werehouse = customs,
                     Timestamp = lastActivity.Timestamp.AddDays(1).AddHours(1),
                     SentToWerehouse = kyiv,
-                    AdditionaldDeliveryFee = 2m,
+                    AdditionaldDeliveryFee = 4m,
                 };
 
-                var handlerFactory = new ActivityHandlersFactory();
-                handlerFactory.GetActivityHandler(readyActivity).Apply(parcel, readyActivity);
-                handlerFactory.GetActivityHandler(sendActivity).Apply(parcel, sendActivity);
+                parcel.Activities.Add(readyActivity);
+                parcel.Activities.Add(sendActivity);
+
+                parcel.Werehouse = null;
+                parcel.DeliveryFee += 4m;
+
 
                 ctx.SaveChanges();
             }
@@ -65,11 +78,25 @@ namespace EFExamples2
             using (var ctx = new EFExamples2Context())
             {
                 var parcel = ctx.Parcels.First();
-                var lastActivity = parcel.Activities.Where(x => !x.IsReverted).OrderByDescending(x => x.Timestamp).First();
+                var lastActivity = parcel.Activities.OrderByDescending(x => x.Timestamp).First();
+                var previousActivity = parcel.Activities.OrderByDescending(x => x.Timestamp).Skip(1).First();
 
-                var handlerFactory = new ActivityHandlersFactory();
-                var handler = handlerFactory.GetActivityHandler(lastActivity);
-                handler.Revert(lastActivity);
+                var typeOfTheLastActivity = lastActivity.GetType().Name;
+
+                switch (typeOfTheLastActivity) {
+                    case "SendActivity":
+                        parcel.Werehouse = lastActivity.Werehouse;
+                        parcel.DeliveryFee -= (lastActivity as SendActivity).AdditionaldDeliveryFee.Value;
+                        break;
+
+                    case "ReadyForSend":
+                        // apply reready-for-send-specific actions
+                        break;
+
+                    case "Retrieve":
+                        // apply send-specific delivery actions
+                        break;
+                }
 
                 ctx.SaveChanges();
             }

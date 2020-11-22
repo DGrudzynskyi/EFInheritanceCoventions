@@ -44,10 +44,7 @@
                 Name = "Kyiv 1",
             };
 
-            context.Werehouses.Add(stockholm);
-            context.Werehouses.Add(wroclav);
-            context.Werehouses.Add(customs);
-            context.Werehouses.Add(kyiv);
+            context.Werehouses.AddOrUpdate(x => x.Name, stockholm, wroclav, customs, kyiv);
 
             var tufli = new Parcel()
             {
@@ -55,6 +52,8 @@
                 DeliveryFee = 6m,
                 Id = 1,
                 Value = 120,
+                TargetWerehouse = kyiv,
+                Activities = new List<Activity>(),
             };
 
             var createTufli = new CreateActivity()
@@ -102,19 +101,19 @@
             {
                 Parcel = tufli,
                 Werehouse = wroclav,
-                Timestamp = new DateTime(2019, 9, 13),
+                Timestamp = new DateTime(2019, 9, 13, 1, 0, 0),
                 SentToWerehouse = customs,
             };
 
 
-            context.Parcels.Add(tufli);
 
-            context.Activities.Add(createTufli);
-            context.Activities.Add(readyForDeliveryToMeest);
-            context.Activities.Add(sentToMeest);
-            context.Activities.Add(retreivedByMeest);
-            context.Activities.Add(readyForDeliveryToCustoms);
-            context.Activities.Add(sentToCustoms);
+            tufli.Activities.Add(createTufli);
+            tufli.Activities.Add(readyForDeliveryToMeest);
+            tufli.Activities.Add(sentToMeest);
+            tufli.Activities.Add(retreivedByMeest);
+            tufli.Activities.Add(readyForDeliveryToCustoms);
+            tufli.Activities.Add(sentToCustoms);
+            context.Parcels.AddOrUpdate(x => x.Value, tufli);
         }
     }
 }
