@@ -14,7 +14,7 @@ namespace EFExamples2
                 var parcel = ctx.Parcels.First();
                 var customs = ctx.Werehouses.Single(x => x.Name == "Customs");
 
-                var retrieveActivity = new RetrieveActivity(customs, parcel, DateTime.Now.AddDays(-1));
+                var retrieveActivity = new RetrieveActivity(customs,parcel,DateTime.Now.AddDays(-1));
 
                 parcel.TrackActivity(retrieveActivity);
 
@@ -44,7 +44,7 @@ namespace EFExamples2
         {
             using (var ctx = new EFExamples2Context())
             {
-                var parcel = ctx.Parcels.Find(1);
+                var parcel = ctx.Parcels.First();
                 var lastActivity = parcel.PickActivity();
                 lastActivity.Undo();
                 ctx.SaveChanges();
