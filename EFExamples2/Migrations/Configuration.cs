@@ -44,10 +44,10 @@
                 Name = "Kyiv 1",
             };
 
-            context.Werehouses.Add(stockholm);
-            context.Werehouses.Add(wroclav);
-            context.Werehouses.Add(customs);
-            context.Werehouses.Add(kyiv);
+            context.Werehouses.AddOrUpdate(x => x.City, stockholm);
+            context.Werehouses.AddOrUpdate(x => x.City, wroclav);
+            context.Werehouses.AddOrUpdate(x => x.City, customs);
+            context.Werehouses.AddOrUpdate(x => x.City, kyiv);
 
             var createTufli = new CreateActivity(stockholm, 120, 1.4m, 6m, kyiv, new DateTime(2019, 9, 10));
 
@@ -63,15 +63,14 @@
 
             var sentToCustoms = new SendActivity(tufli, customs, null, new DateTime(2019, 9, 13, 1, 0, 0));
 
+            context.Activities.AddOrUpdate(x => x.Timestamp, createTufli);
+            context.Activities.AddOrUpdate(x => x.Timestamp, readyForDeliveryToMeest);
+            context.Activities.AddOrUpdate(x => x.Timestamp, sentToMeest);
+            context.Activities.AddOrUpdate(x => x.Timestamp, retreivedByMeest);
+            context.Activities.AddOrUpdate(x => x.Timestamp, readyForDeliveryToCustoms);
+            context.Activities.AddOrUpdate(x => x.Timestamp, sentToCustoms);
 
-            context.Parcels.Add(tufli);
-
-            context.Activities.Add(createTufli);
-            context.Activities.Add(readyForDeliveryToMeest);
-            context.Activities.Add(sentToMeest);
-            context.Activities.Add(retreivedByMeest);
-            context.Activities.Add(readyForDeliveryToCustoms);
-            context.Activities.Add(sentToCustoms);
+            context.Parcels.AddOrUpdate(x => x.Value, tufli);
         }
     }
 }

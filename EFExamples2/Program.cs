@@ -12,6 +12,7 @@ namespace EFExamples2
         {
             var deliveryService = new DeliveryService();
             deliveryService.RetreivedByCustoms();
+            deliveryService.ProcessedAndSentByCustoms();
 
             Console.ReadKey();
         }

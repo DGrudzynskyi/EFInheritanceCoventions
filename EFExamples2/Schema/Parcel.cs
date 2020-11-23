@@ -48,8 +48,8 @@ namespace EFExamples2.Schema
                 throw new InvalidOperationException("activities from past can not be applied");
             }
 
-            this.Activities.Add(activity);
             activity.Apply();
+            this.Activities.Add(activity);
         }
 
         public Activity PickActivity() {
